@@ -1,0 +1,24 @@
+File Structure
+server.js Main Express server implementing all API endpoints and Firestore interaction.
+
+latency.js Client script used to measure average latency of the /register and /list endpoints across both regions.
+
+consistency.js Client script used to test eventual consistency by registering a username on one instance and immediately querying the other instance.
+
+package.json Defines project dependencies and start script.
+
+node_modules/ Contains installed dependencies including Express, Firestore SDK, and node-fetch.
+
+Implementation Description
+
+The application is a Node.js Express web service deployed on two Google Cloud VM instances located in different regions.
+ Both instances connect to the same Google Cloud Firestore database.
+
+The server exposes three endpoints:
+GET / Used as a health check endpoint to verify the server is running.
+
+POST /register Accepts a JSON body containing a username. Creates a Firestore document in the "users" collection using the username as the document ID and stores a timestamp.
+
+GET /list Retrieves all usernames stored in the Firestore "users" collection and returns them as a JSON array.
+
+Both regional instances share the same Firestore database, enabling replication and allowing testing of latency and eventual consistency behavior.

@@ -1,0 +1,17 @@
+The average latency measurements from Part IV-A:
+
+US /register average latency: 54.7 ms
+EU /register average latency: 768.1 ms
+US /list average latency: 55.5 ms
+EU /list average latency: 269.4 ms
+
+The results from the eventual consistency experiment in Part IV-B:
+
+Total trials: 10
+Username not found: 0 times
+
+Brief discussion of findings:
+
+The latency measurements show that the US instance responded significantly faster than the EU instance. This is expected because the performance tests were executed from Cloud Shell in a US region. Requests sent to the US virtual machine had a shorter network path and lower round-trip time, while requests sent to the EU instance required cross-region communication, which increased latency. In addition, the /register endpoint had higher latency than /list because write operations to Firestore require additional processing and replication overhead.
+
+The eventual consistency experiment showed that the username was found in all 10 trials. This indicates that replication between regions occurred quickly enough that no visible inconsistency was observed during immediate reads. Although distributed systems may experience temporary replication delays, in this experiment Firestore propagated updates fast enough that both regions appeared synchronized.
